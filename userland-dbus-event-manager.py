@@ -10,11 +10,12 @@ import gtk
 from eventmanager.manager import userland_dbus_manager
 
 if __name__ == "__main__":
-    gtk.gdk.threads_init()
-    app = userland_dbus_manager()
-    try:
-        gtk.main()
-    except KeyboardInterrupt:
-        app.exit()
+	gtk.gdk.threads_init()
+	app = userland_dbus_manager()
+
+	try:
+			gtk.main()
+	except KeyboardInterrupt:
+			app.exit()
 
 

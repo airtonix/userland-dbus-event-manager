@@ -29,7 +29,7 @@ import gobject
 from dbus.mainloop.glib import DBusGMainLoop
 from string import Template
 
-from trayicon.ui import userland_dbus_manager_trayicon
+from trayicon.ui import TrayIcon
 from preferences.ui import userland_dbus_manager_preferences
 from eventmanager import   APP_NAME, APP_DESCRIPTION, APP_VERSION, APP_AUTHORS, APP_HOMEPAGE, APP_LICENSE
 
@@ -95,14 +95,6 @@ class userland_dbus_manager:
 
 		self.MessageQue={}
 		self.HookedObjects = {}
-		self.Icons= {
-			"Paused" 				: gtk.STOCK_MEDIA_PAUSE,
-			"Listening"			:	gtk.STOCK_QUIT,
-			"Initialising"	:	gtk.STOCK_REFRESH,
-			"AddingHook"		: gtk.STOCK_QUIT,
-			"CatchingEvent"	: gtk.STOCK_QUIT
-		}
-		
 		self.Strings = {
 			"NoEventScript" : {
 				"icon"	: gtk.STOCK_DIALOG_WARNING,
@@ -157,7 +149,7 @@ class userland_dbus_manager:
 		gtk.main()
 		
 	def ui_render(self) :
-		self.notification_tray = userland_dbus_manager_trayicon(self)
+		self.notification_tray = TrayIcon(self)
 		self.preferences_application = userland_dbus_manager_preferences(self)
 		
 	def sniff_start(self) :
@@ -173,6 +165,9 @@ class userland_dbus_manager:
 			self.pause({"reason" : "No listeners registered."})
 		
 	def sniff_stop(self):
+		""" TODO :
+			iterate over registered hooks and 'unhook' them.
+		"""
 		self.loop.quit()
 
 	def add_dbus_hook(self,name,object) :
@@ -228,15 +223,16 @@ class userland_dbus_manager:
 	def pause(self,reason):
 			self.State = "Paused"
 			self.message("Paused",{"reason":reason})
-			self.notification_tray.icon_update()
+			self.notification_tray.update()
 			self.sniff_stop()
 		
 	def resume(self):
+		print "%s waking up" % self
 		try:
 			self.State = "Listening"
-			self.notification_tray.icon_update()
-			self.loop.run()
+			self.notification_tray.update()
 			self.message("Listening")
+			self.loop.run()
 		except KeyboardInterrupt:
 			self.quit("Keyboard Interupt")
 			
@@ -268,6 +264,7 @@ class userland_dbus_manager:
 			else :
 				title = locale_string["title"]
 				body = locale_string["body"]
+
 			return self.notification(locale_string["icon"], title, body) 
 		except :
 			print "Error : Can't find self.String : %s" % key
@@ -280,10 +277,11 @@ class userland_dbus_manager:
 				bubble.set_icon_from_pixbuf(helper.render_icon(icon, gtk.ICON_SIZE_DIALOG))
 		else:
 			self.notifications = False
+			
 		try :
 			bubble.show()
 			print "%s : %s << %s >>"  % (self.name, title, message)
-			self.notification_queue.push(bubble)
+			#self.notification_queue[len(self.notification_queue)] = bubble
 			return bubble
 		except : 
 			print "%s : Failed to send notification" % self.name
@@ -291,30 +289,7 @@ class userland_dbus_manager:
 		
 	def help(self,keyword=None):
 		print self.name 
-		print """
-Usage: dbus-laptop-lid-listener.py [MODE] [OPENSCRIPT, CLOSESCRIPT]
-
-Runs scripts in response to dbus signals from the laptop lid switch.
-
-Mandatory MODE must be one of :  
- listen\t : what you'd be interested in... sits in memory listening for dbus signals and runs your openScript when the 
-\t   acpi laptop lid state changes to "open" and your close script when it changes to "closed"
-
- test\t : prints out the hal address of your laptop lid switch.
-
- help\t : This text.
- 
- 
-Optional references to files [OPENSCRIPT, CLOSESCRIPT]
-     Any script, terminal commands, etc that can be executed under your users account.
-     
-     Omitting references to these files will cause the script to look for them in the same directory that the script is located : 
-     # <script-location>/laptop-lid-opened.sh
-     # <script-location>/laptop-lid-closed.sh
-      
-"""
-
-
+		print """ """
 
 if __name__ == "__main__":
 	import userland_dbus_manager_trayicon

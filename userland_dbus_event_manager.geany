@@ -1,0 +1,15 @@
+
+[indentation]
+indent_width=2
+indent_type=1
+indent_hard_tab_width=8
+detect_indent=false
+indent_mode=2
+
+[project]
+name=userland_dbus_event_manager
+base_path=/home/airtonix/Dev/userland-dbus-event-manager
+make_in_base_path=false
+
+[files]
+current_page=-1
