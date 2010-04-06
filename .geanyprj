@@ -1,0 +1,8 @@
+
+[project]
+name=DBUS Laptop Lid Script Manager
+description=
+base_path=./
+run_cmd=
+regenerate=true
+type=Python
