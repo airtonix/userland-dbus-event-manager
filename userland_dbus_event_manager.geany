@@ -10,6 +10,13 @@ indent_mode=2
 name=userland_dbus_event_manager
 base_path=/home/airtonix/Dev/userland-dbus-event-manager
 make_in_base_path=false
+description=
+run_cmd=
 
 [files]
-current_page=-1
+current_page=0
+FILE_NAME_0=59;Python;0;16;1;1;0;/home/airtonix/Dev/userland-dbus-event-manager/userland-dbus-event-manager.py;0
+FILE_NAME_1=4226;Python;0;16;1;1;0;/home/airtonix/Dev/userland-dbus-event-manager/eventmanager/manager.py;0
+FILE_NAME_2=758;Python;0;16;1;1;0;/home/airtonix/Dev/userland-dbus-event-manager/preferences/ui.py;0
+FILE_NAME_3=6170;Python;0;16;1;1;0;/home/airtonix/Dev/userland-dbus-event-manager/preferences/config.py;0
+FILE_NAME_4=3056;Python;0;16;1;1;0;/home/airtonix/Dev/userland-dbus-event-manager/trayicon/ui.py;0

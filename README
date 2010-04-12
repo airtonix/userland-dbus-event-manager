@@ -1,0 +1,16 @@
+Userland Dbus Event Manager v0.01
+Zenobius Jiricek, airtonix > ubuntuforums.org
+
+ Description :
+  A userland dbus event watcher that runs scripts for registered DBUS hook events.
+  The important distinction here is that :
+		+ scripts or commands are run as the user not root.
+		+ the user navigates the dbus tree and selects DBUS signals (elements to hook and register)
+		+ multiple scripts/commands can be assigned to each signal
+ 
+ Dependancies : 
+   pynotify, notify-osd, notifcation-daemon
+      sudo apt-get install python-notify notify-osd notification-daemon
+
+ Installation :
+	Run setup.py
