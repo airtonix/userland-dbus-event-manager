@@ -162,8 +162,8 @@ class userland_dbus_manager:
 
 		print self.config.list_dirs()
 
-		if self.config.get_bool("use_notify_send") :
-			self.config.set_bool("use_notify_send", False)
+		if not self.config.get_bool("use_notify_send") :
+			self.config.set_bool("use_notify_send", True)
 
 		if not "system" in self.config.list_dirs() :
 			self.config.set_int("objects/system/count", 0)
@@ -177,6 +177,7 @@ class userland_dbus_manager:
 		if not "groups" in self.config.list_dirs("actions") :
 			self.config.set_int("actions/groups/count", 0)
 
+		print self.config.entries()
 		
 	def show_preferences_dialog (self):
 		""" Function doc """
