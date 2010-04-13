@@ -24,7 +24,7 @@ pygtk.require('2.0')
 import gtk
 import gtk.glade
 import gconf
-
+import types
 
 class PreferencesEditor :
 	""" Userland Dbus Event Listener : Preferences Application """
@@ -41,58 +41,48 @@ class PreferencesEditor :
 		self.AppHeader = self.builder.get_object("Preferences_Main_Header_Label")
 		self.AppHeader.set_text(self.parent.info["name"])
 
-		self.ObjectsList_GenerateWidgets()
-		
+		config = self.parent.config
+		tree = MultiList(config.get_entries() )
+		self.builder.get_object("General_Scroller").add( tree.render() )
+
+		"""
+		for page in config.list_dirs() :
+			page = self.key_name_from_path(page)
+			print "rendering : %s" % page
+
+			obj = self.builder.get_object( "%s_List_Scroller" % page.capitalize() )
+			tree = self.render_tree_folders( config.list_dirs(page) )
+			obj.add( tree )
+			
+		"""
 		print "Preferences Application Ready"
 		self.editor.show_all()
 
-#
-## User Interface : Content Generators
-### generate widgets based on current config settings, things like a list of objects or action-groups
-	def ObjectsList_getNames(self):
-		output = []
-		for object in self.parent.config['objects'] :
-			output.append(object)
-			
-		return output
-		
-	def ObjectsList_GenerateWidgets (self):
+	def key_name_from_path (self,path):
 		""" Function doc """
-		objects = self.parent.config["objects"]
-		self.Objects_List = {
-			"Session" : {
-				"Area" 		: self.builder.get_object("Objects_Session_List_Scroller"),
-				"Tree"		: None,
-				"Column"	: gtk.TreeViewColumn('Name'),
-				"Store"		: gtk.TreeStore(str),
-				"Cell"		: gtk.CellRendererText(),
-			},
-			"System" : {
-				"Area"	: self.builder.get_object("Objects_System_List_Scroller"),
-				"Tree"	: None,
-				"Column"	: gtk.TreeViewColumn('Name'),
-				"Store"	: gtk.TreeStore(str),
-				"Cell"		: gtk.CellRendererText(),
-			}
-		}
+		return path[ path.rfind("/")+1 : ]
 
-		for bus_group in objects :
-			# So far this holds : System & Session. Created for possible future types of DBUS buses
-			Page = self.Objects_List[bus_group]
-			
-			for object in objects[bus_group] :
-				Row = Page["Store"].append(None, ['%s' % object])
+	def render_tree_folders(self,data):
+		""" Function doc """
+		tree_column_name = gtk.TreeViewColumn('Name')
+		tree_cell_render = gtk.CellRendererText()
+		tree_store = gtk.TreeStore(types.StringType)
 
-			Page["Tree"] = gtk.TreeView(Page["Store"]) #ObjectsList_View
-			Page["Tree"].append_column(Page["Column"])
-			Page["Column"].pack_start(Page["Cell"], True)
-			Page["Column"].add_attribute(Page["Cell"], 'text', 0)
-			Page["Tree"].set_search_column(0)
-			Page["Column"].set_sort_column_id(0)
-			Page["Tree"].set_reorderable(True)
-			Page["Area"].add(Page["Tree"])
+		for item in data :
+			row = tree_store.append(None, ['%s' % self.key_name_from_path( str(item.get_key()) ) ] )
+
+		tree_view = gtk.TreeView(tree_store)
+		tree_view.append_column(tree_column_name)
+
+		tree_column_name.pack_start(tree_cell_render, True)
+		tree_column_name.add_attribute(tree_cell_render, 'text', 0)
 		
+		tree_view.set_enable_search(True)
+		tree_view.set_search_column(0)
+		tree_column_name.set_sort_column_id(0)
+		tree_view.set_reorderable(True)
 
+		return tree_view
 #
 ## User Interface : Control Handlers
 	def ui_close(self):
@@ -111,3 +101,60 @@ class PreferencesEditor :
 		Called when a 'help' button is clicked.
 		Each help button will pass a key which relates to a section in the help file.
 		"""
+
+class MultiList:
+	def __init__(self, data):
+		self.data = data
+		
+	def render(self):
+		list_store = gtk.ListStore(object)
+		for item in self.data :
+			row = list_store.append(None, ['%s' % self.trim_path( str(item.get_key()) ) , '%s' % self.trim_path( str(item.get_value()) )] )
+
+		self.tree_view = gtk.TreeView(list_store)
+		self.column = gtk.TreeViewColumn('Blah')
+
+		self.text = r = gtk.CellRendererText()
+		self.column.pack_start(r, False)
+		self.column.set_cell_data_func(r, self.select_data)
+
+		self.toggle = r = gtk.CellRendererToggle()
+		self.column.pack_start(r, False)
+		self.column.set_cell_data_func(r, self.select_data)
+
+		self.pixbuf = r = gtk.CellRendererPixbuf()
+		self.column.pack_start(r, False)
+		self.column.set_cell_data_func(r, self.select_data)
+
+		self.tree_view.append_column(self.column)
+		
+		return self.tree_view
+
+	def trim_path (self,path):
+		""" Function doc """
+		return path[ path.rfind("/")+1 : ]
+
+	def select_data(self, col, cell, model, iter):
+	
+		data = model[iter][0]
+
+		if isinstance(data, bool):
+			self.toggle.props.visible = True
+			self.toggle.props.active = data
+			self.text.props.visible=False
+			self.pixbuf.props.visible=False
+		elif isinstance(data, gtk.gdk.Pixbuf):
+			self.pixbuf.props.visible = True
+			self.pixbuf.props.pixbuf = data
+			self.text.props.visible=False     
+			self.toggle.props.visible = False
+		elif isinstance(data, str):
+			self.pixbuf.props.visible = True
+			self.pixbuf.props.pixbuf = data
+			self.text.props.visible=False     
+			self.toggle.props.visible = False
+		else:
+			self.text.props.visible=True
+			self.text.props.text = data
+			self.toggle.props.visible = False
+			self.pixbuf.props.visible=False

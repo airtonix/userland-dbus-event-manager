@@ -1,28 +1,5 @@
 <?xml version="1.0"?>
 <interface>
-	<!--
-	/*
-	 * editor.glade
-	 * This file is part of Userland-Dbus-Event-Manager
-	 *
-	 * Copyright (C) 2010 - Zenobius Jiricek
-	 *
-	 * Userland-Dbus-Event-Manager is free software; you can redistribute it and/or modify
-	 * it under the terms of the GNU General Public License as published by
-	 * the Free Software Foundation; either version 2 of the License, or
-	 * (at your option) any later version.
-	 *
-	 * Userland-Dbus-Event-Manager is distributed in the hope that it will be useful,
-	 * but WITHOUT ANY WARRANTY; without even the implied warranty of
-	 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	 * GNU General Public License for more details.
-	 *
-	 * You should have received a copy of the GNU General Public License
-	 * along with Userland-Dbus-Event-Manager; if not, write to the Free Software
-	 * Foundation, Inc., 51 Franklin St, Fifth Floor, 
-	 * Boston, MA  02110-1301  USA
-	 */
-	-->
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="userland-dbus-event-manager-preferences">
@@ -31,23 +8,45 @@
     <property name="default_height">480</property>
     <property name="destroy_with_parent">True</property>
     <child>
-      <object class="GtkVBox" id="Preferences_Main_vbox">
+      <object class="GtkVBox" id="Preferences_Main_VBox">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="Preferences_Main_Header_Label">
-            <property name="width_request">521</property>
-            <property name="height_request">65</property>
+          <object class="GtkHBox" id="Preferences_Main_Header_HBox">
             <property name="visible">True</property>
-            <property name="xalign">0</property>
-            <property name="yalign">0</property>
-            <property name="xpad">7</property>
-            <property name="ypad">7</property>
-            <property name="label" translatable="yes">&lt;self.info["name"]&gt;</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-              <attribute name="scale" value="1.800000"/>
-            </attributes>
+            <property name="border_width">6</property>
+            <child>
+              <object class="GtkImage" id="Preferences_Main_Header_Icon">
+                <property name="width_request">64</property>
+                <property name="visible">True</property>
+                <property name="pixel_size">64</property>
+                <property name="icon_name">preferences-desktop-peripherals</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="Preferences_Main_Header_Label">
+                <property name="width_request">521</property>
+                <property name="height_request">65</property>
+                <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
+                <property name="xpad">7</property>
+                <property name="ypad">7</property>
+                <property name="label" translatable="yes">&lt;self.info["name"]&gt;</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="1.800000"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -55,7 +54,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="Preferences_Main_notebook">
+          <object class="GtkNotebook" id="Preferences_Main_Notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="tab_pos">left</property>
@@ -64,10 +63,10 @@
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkHBox" id="hbox5">
+                  <object class="GtkHBox" id="General_Header_HBox">
                     <property name="visible">True</property>
                     <child>
-                      <object class="GtkImage" id="Objects_Header_Icon2">
+                      <object class="GtkImage" id="General_Header_Icon">
                         <property name="width_request">35</property>
                         <property name="visible">True</property>
                         <property name="pixel_size">32</property>
@@ -93,8 +92,29 @@
                         </attributes>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
                         <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolbar" id="General_Header_Toolbar">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkToolButton" id="General_Header_Button_Help">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Help</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-help</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -107,49 +127,11 @@
                   <object class="GtkScrolledWindow" id="General_Scroller">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="border_width">5</property>
                     <property name="hscrollbar_policy">automatic</property>
                     <property name="vscrollbar_policy">automatic</property>
                     <child>
-                      <object class="GtkFixed" id="General_Fixed_Area">
-                        <property name="visible">True</property>
-                        <child>
-                          <object class="GtkCheckButton" id="General_feedback_checkbutton_useNotifySend">
-                            <property name="label" translatable="yes">Use notify-send bubbles ?</property>
-                            <property name="width_request">198</property>
-                            <property name="height_request">30</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="receives_default">False</property>
-                            <property name="tooltip_text" translatable="yes">ticking this will cause the event manager to use notify-send to show you important messages. Otherwise messages will be only sent to the log file.</property>
-                            <property name="draw_indicator">True</property>
-                          </object>
-                          <packing>
-                            <property name="x">22</property>
-                            <property name="y">39</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="General_Feedback_label_header">
-                            <property name="width_request">100</property>
-                            <property name="height_request">47</property>
-                            <property name="visible">True</property>
-                            <property name="xalign">0</property>
-                            <property name="xpad">10</property>
-                            <property name="ypad">10</property>
-                            <property name="label" translatable="yes">Feedback</property>
-                            <attributes>
-                              <attribute name="style" value="normal"/>
-                              <attribute name="weight" value="medium"/>
-                              <attribute name="gravity" value="west"/>
-                              <attribute name="gravity-hint" value="natural"/>
-                              <attribute name="scale" value="1.500000"/>
-                            </attributes>
-                          </object>
-                          <packing>
-                            <property name="x">15</property>
-                          </packing>
-                        </child>
-                      </object>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -159,24 +141,23 @@
               </object>
             </child>
             <child type="tab">
-              <object class="GtkHBox" id="hbox6">
+              <object class="GtkHBox" id="General_PageTab_HBox">
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkImage" id="Objects_PageTab_Icon1">
-                    <property name="width_request">35</property>
+                  <object class="GtkLabel" id="General_PageTab_Label">
                     <property name="visible">True</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">document-properties</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">General</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="General_pagetab">
+                  <object class="GtkImage" id="General_PageTab_Icon">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">General</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">document-properties</property>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -184,7 +165,7 @@
                 </child>
               </object>
               <packing>
-                <property name="tab_fill">False</property>
+                <property name="tab_expand">True</property>
               </packing>
             </child>
             <child>
@@ -192,7 +173,7 @@
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkHBox" id="hbox1">
+                  <object class="GtkHBox" id="Objects_Header_HBox">
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkImage" id="Objects_Header_Icon">
@@ -227,6 +208,28 @@
                         <property name="position">1</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkToolbar" id="Objects_Header_Toolbar">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkToolButton" id="Objects_Header_Button_Help">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Help</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-help</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -234,204 +237,87 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkNotebook" id="notebook1">
+                  <object class="GtkHPaned" id="Objects_Hpanel">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="border_width">2</property>
+                    <property name="position">1</property>
+                    <property name="position_set">True</property>
                     <child>
-                      <object class="GtkHPaned" id="Objects_Session_Page">
+                      <object class="GtkVBox" id="Objects_List_VBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="position">1</property>
-                        <property name="position_set">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkVBox" id="Objects_Session_List_VBox">
-                            <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkScrolledWindow" id="Objects_Session_List_Scroller">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHButtonBox" id="Objects_Session_List_HButtonBox">
-                                <property name="visible">True</property>
-                                <property name="layout_style">start</property>
-                                <child>
-                                  <object class="GtkButton" id="Objects_Session_List_Button_Add">
-                                    <property name="label">gtk-add</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="Objects_Session_List_Button_Remove">
-                                    <property name="label">gtk-remove</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="pack_type">end</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkScrolledWindow" id="Objects_Session_Object_Detail">
+                          <object class="GtkScrolledWindow" id="Objects_List_Scroller">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
                             <property name="vscrollbar_policy">automatic</property>
+                            <signal name="drag_failed" handler="on_Objects_Session_List_Scroller_drag_failed" after="yes"/>
+                            <signal name="drag_drop" handler="on_Objects_Session_List_Scroller_drag_drop" after="yes"/>
+                            <signal name="drag_data_received" handler="on_Objects_Session_List_Scroller_drag_data_received" after="yes"/>
                             <child>
                               <placeholder/>
                             </child>
                           </object>
                           <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
+                            <property name="position">0</property>
                           </packing>
                         </child>
-                      </object>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="Objects_Session_PageTab">
-                        <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Session DBUS Objects</property>
-                        <property name="label" translatable="yes">Session</property>
-                      </object>
-                      <packing>
-                        <property name="tab_expand">True</property>
-                        <property name="tab_fill">False</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkHPaned" id="Objects_System_Page">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="position">1</property>
-                        <property name="position_set">True</property>
                         <child>
-                          <object class="GtkVBox" id="Objects_System_List_VBox">
+                          <object class="GtkToolbar" id="Objects_List_Toolbar">
+                            <property name="width_request">172</property>
+                            <property name="height_request">28</property>
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkScrolledWindow" id="Objects_System_List_Scroller">
+                              <object class="GtkToolButton" id="Objects_List_Remove">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHButtonBox" id="Objects_System_List_HButtonBox">
-                                <property name="visible">True</property>
-                                <property name="layout_style">start</property>
-                                <child>
-                                  <object class="GtkButton" id="Objects_System_List_Button_Add">
-                                    <property name="label">gtk-add</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="Objects_System_List_Button_Remove">
-                                    <property name="label">gtk-remove</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="pack_type">end</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
+                                <property name="label" translatable="yes">toolbutton1</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-remove</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="position">1</property>
+                                <property name="homogeneous">True</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="Objects_List_Add">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">toolbutton2</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-add</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="homogeneous">True</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkScrolledWindow" id="Objects_System_Detail_Scroller">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
+                            <property name="expand">False</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                       </object>
                       <packing>
-                        <property name="position">1</property>
+                        <property name="resize">True</property>
+                        <property name="shrink">False</property>
                       </packing>
                     </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="Objects_System_PageTab">
+                    <child>
+                      <object class="GtkScrolledWindow" id="Objects_Detail_Scroller">
                         <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">System DBUS Objects</property>
-                        <property name="label" translatable="yes">System</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                       <packing>
-                        <property name="position">1</property>
-                        <property name="tab_fill">False</property>
+                        <property name="resize">True</property>
+                        <property name="shrink">True</property>
                       </packing>
                     </child>
                   </object>
@@ -445,33 +331,35 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkHBox" id="hbox2">
+              <object class="GtkHBox" id="Objects_PageTab_HBox">
+                <property name="width_request">72</property>
                 <property name="visible">True</property>
+                <property name="spacing">2</property>
+                <child>
+                  <object class="GtkLabel" id="Objects_PageTab_Label">
+                    <property name="visible">True</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">Objects</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
                 <child>
                   <object class="GtkImage" id="Objects_PageTab_Icon">
-                    <property name="width_request">35</property>
                     <property name="visible">True</property>
                     <property name="pixel_size">16</property>
                     <property name="icon_name">insert-object</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="Objects_PageTab_Label">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Objects</property>
-                  </object>
-                  <packing>
+                    <property name="pack_type">end</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </object>
               <packing>
                 <property name="position">1</property>
-                <property name="tab_fill">False</property>
+                <property name="tab_expand">True</property>
               </packing>
             </child>
             <child>
@@ -479,10 +367,10 @@
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkHBox" id="hbox4">
+                  <object class="GtkHBox" id="Actions_Header_HBox">
                     <property name="visible">True</property>
                     <child>
-                      <object class="GtkImage" id="Objects_Header_Icon1">
+                      <object class="GtkImage" id="Actions_Header_Icon">
                         <property name="width_request">35</property>
                         <property name="visible">True</property>
                         <property name="pixel_size">32</property>
@@ -514,6 +402,28 @@
                         <property name="position">1</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkToolbar" id="Actions_Header_Toolbar">
+                        <property name="width_request">30</property>
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkToolButton" id="Actions_Header_Button_Help">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Help</property>
+                            <property name="use_underline">True</property>
+                            <property name="stock_id">gtk-help</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -521,198 +431,83 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkNotebook" id="Actions_notebook">
+                  <object class="GtkHPaned" id="Actions_HPanel">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="border_width">2</property>
+                    <property name="position_set">True</property>
                     <child>
-                      <object class="GtkHPaned" id="Actions_Actions_HPanel">
+                      <object class="GtkVBox" id="Actions_List_Vbox">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="position_set">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkVBox" id="Actions_Actions_List_Vbox">
+                          <object class="GtkScrolledWindow" id="Actions_List_Scroller">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
+                            <property name="can_focus">True</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
                             <child>
-                              <object class="GtkScrolledWindow" id="Actions_Actions_List_Scroller">
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkToolbar" id="Actions_List_Toolbar">
+                            <property name="width_request">172</property>
+                            <property name="height_request">28</property>
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkToolButton" id="Actions_List_Remove">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
+                                <property name="label" translatable="yes">toolbutton1</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-remove</property>
                               </object>
                               <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHButtonBox" id="Actions_Actions_List_HbuttonBox">
-                                <property name="visible">True</property>
+                                <property name="expand">False</property>
                                 <property name="homogeneous">True</property>
-                                <property name="layout_style">start</property>
-                                <child>
-                                  <object class="GtkButton" id="Actions_Actions_List_Button_Add">
-                                    <property name="label">gtk-add</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="Actions_Actions_List_Button_Remove">
-                                    <property name="label">gtk-remove</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkToolButton" id="Actions_List_Add">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">toolbutton2</property>
+                                <property name="use_underline">True</property>
+                                <property name="stock_id">gtk-add</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="position">1</property>
+                                <property name="homogeneous">True</property>
                               </packing>
                             </child>
                           </object>
                           <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">False</property>
+                            <property name="expand">False</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
-                        <child>
-                          <object class="GtkScrolledWindow" id="Actions_Actions_Detail_Scroller">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
-                          </packing>
-                        </child>
-                      </object>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="Actions_notebook_Actions_pagetab">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Actions</property>
                       </object>
                       <packing>
-                        <property name="tab_fill">False</property>
+                        <property name="resize">True</property>
+                        <property name="shrink">False</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkHPaned" id="Actions_Groups_HPanel">
+                      <object class="GtkScrolledWindow" id="Actions_Detail_Scroller">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="position_set">True</property>
+                        <property name="hscrollbar_policy">automatic</property>
+                        <property name="vscrollbar_policy">automatic</property>
                         <child>
-                          <object class="GtkVBox" id="Actions_Groups_List_vbox">
-                            <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
-                            <child>
-                              <object class="GtkScrolledWindow" id="Actions_Groups_List_Scroller">
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">automatic</property>
-                                <property name="vscrollbar_policy">automatic</property>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHButtonBox" id="Actions_Groups_List_HbuttonBox">
-                                <property name="visible">True</property>
-                                <property name="layout_style">start</property>
-                                <child>
-                                  <object class="GtkButton" id="Actions_Groups_List_Button_Add">
-                                    <property name="label">gtk-add</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="Actions_Groups_List_Button_Remove">
-                                    <property name="label">gtk-remove</property>
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
-                                    <property name="receives_default">True</property>
-                                    <property name="use_stock">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">False</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkScrolledWindow" id="Actions_Groups_Detail_Scroller">
-                            <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="hscrollbar_policy">automatic</property>
-                            <property name="vscrollbar_policy">automatic</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="resize">True</property>
-                            <property name="shrink">True</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child type="tab">
-                      <object class="GtkLabel" id="Actions_notebook_Groups_pagetab">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Groups</property>
-                      </object>
-                      <packing>
-                        <property name="position">1</property>
-                        <property name="tab_fill">False</property>
+                        <property name="resize">True</property>
+                        <property name="shrink">True</property>
                       </packing>
                     </child>
                   </object>
@@ -726,24 +521,23 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkHBox" id="hbox3">
+              <object class="GtkHBox" id="Actions_PageTab_HBox">
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkImage" id="Actions_PageTab_Icon">
-                    <property name="width_request">35</property>
+                  <object class="GtkLabel" id="Actions_PageTab_Label">
                     <property name="visible">True</property>
-                    <property name="pixel_size">16</property>
-                    <property name="icon_name">appointment-new</property>
+                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">Actions</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="Actions_PageTab_Label">
+                  <object class="GtkImage" id="Actions_PageTab_Icon">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Actions</property>
+                    <property name="pixel_size">16</property>
+                    <property name="icon_name">appointment-new</property>
                   </object>
                   <packing>
                     <property name="position">1</property>
@@ -752,7 +546,7 @@
               </object>
               <packing>
                 <property name="position">2</property>
-                <property name="tab_fill">False</property>
+                <property name="tab_expand">True</property>
               </packing>
             </child>
           </object>
@@ -772,124 +566,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkWindow" id="userland-dbus-event-manager-preferences-addObject">
-    <property name="modal">True</property>
-    <property name="window_position">center-on-parent</property>
-    <property name="default_width">440</property>
-    <property name="default_height">250</property>
-    <property name="destroy_with_parent">True</property>
-    <property name="icon_name">list-add</property>
-    <property name="type_hint">utility</property>
-    <child>
-      <object class="GtkVBox" id="AddObject_Main_VBox">
-        <property name="visible">True</property>
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="GtkLabel" id="AddObject_Main_Header_Label">
-            <property name="visible">True</property>
-            <property name="xalign">0</property>
-            <property name="xpad">10</property>
-            <property name="ypad">10</property>
-            <property name="label" translatable="yes">Object Details</property>
-            <property name="single_line_mode">True</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-              <attribute name="scale" value="1.500000"/>
-            </attributes>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <object class="GtkHBox" id="AddObject_Main_HBox">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkHButtonBox" id="AddObject_Main_HButtonBox_Left">
-                <property name="visible">True</property>
-                <property name="layout_style">start</property>
-                <child>
-                  <object class="GtkButton" id="AddObject_Main_Button_Help">
-                    <property name="label" translatable="yes">Help</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">image_icon_help</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkHButtonBox" id="AddObject_Main_HButtonBox_Right">
-                <property name="visible">True</property>
-                <property name="spacing">6</property>
-                <property name="homogeneous">True</property>
-                <property name="layout_style">end</property>
-                <child>
-                  <object class="GtkButton" id="AddObject_Main_Button_Cancel">
-                    <property name="label" translatable="yes">Cancel</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">image_icon_cancel</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="AddObject_Main_Button_Apply">
-                    <property name="label" translatable="yes">Apply</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="image">image_icon_apply</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
-  <object class="GtkImage" id="image_icon_help">
-    <property name="visible">True</property>
-    <property name="stock">gtk-help</property>
-  </object>
-  <object class="GtkImage" id="image_icon_cancel">
-    <property name="visible">True</property>
-    <property name="stock">gtk-cancel</property>
-  </object>
-  <object class="GtkImage" id="image_icon_apply">
-    <property name="visible">True</property>
-    <property name="stock">gtk-apply</property>
   </object>
 </interface>

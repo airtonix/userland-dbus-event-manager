@@ -57,87 +57,82 @@ import types
 
 
 class ConfigManager:
-	def __init__( self, domain, dir ):
+	def __init__( self, domain):
 		self.domain = domain
-		self.dir = dir
 		self.client = gconf.client_get_default ()
+		
 		if not self.client.dir_exists (self.domain):
 			self.client.add_dir ( self.domain, gconf.CLIENT_PRELOAD_NONE )
 
-	def get_entries( self ):
+	def get_entries( self,path=None):
 		'''Wrapper method for gconf.Client.all_entries(...)'''
-		return self.client.all_entries( "%s/%s" % (self.domain, self.dir) )
-
-	def get_list( self ):
-		'''Wrapper method for gconf.Client.get_list(...)'''
-		return self.client.get_list( "%s/%s/list" % (self.domain, self.dir) , gconf.VALUE_STRING )
-                                                                                                                            
-	def set_list( self, values ): # set_list( self, list )
-		'''Wrapper method for gconf.Client.set_list(...)'''
-		return self.client.set_list( "%s/%s/list" % (self.domain, self.dir), gconf.VALUE_STRING, values )
-
-	def set_string( self, key, value ):
-		'''Wrapper method for gconf.Client.set_string(...)'''
-		return self.client.set_string ( "%s/%s/%s" % (self.domain, self.dir, key), value )
-                                                                                                                            
-	def get_string( self, key ):
-		'''Wrapper method for gconf.Client.get_string(...)'''
-		return self.client.get_string( "%s/%s/%s" % (self.domain, self.dir, key) )
-
-	def set_int( self, key, value ):
-		'''Wrapper method for gconf.Client.set_int(...)'''
-		return self.client.set_int( "%s/%s/%s" % (self.domain, self.dir, key), value )
-
-	def get_int( self, key ):
-		'''Wrapper method for gconf.Client.get_int(...)'''
-		return self.client.get_int( "%s/%s/%s" % (self.domain, self.dir, key) )
-
-	def set_bool( self, key, value ):
-		'''Wrapper method for gconf.Client.set_bool(...)'''
-		return self.client.set_bool( "%s/%s/%s" % (self.domain, self.dir, key), value )
-
-	def get_bool( self, key ):
-		'''Wrapper method for gconf.Client.get_bool(...)'''
-		return self.client.get_bool( "%s/%s/%s" % (self.domain, self.dir, key) )
-
-	def set_float( self, key, value ):
-		'''Wrapper method for gconf.Client.set_float(...)'''
-		return self.client.set_float( "%s/%s/%s" % (self.domain, self.dir, key), value )
-
-	def get_float( self, key ):
-		'''Wrapper method for gconf.Client.get_float(...)'''
-		return self.client.get_float( "%s/%s/%s" % (self.domain, self.dir, key) )
-
-	def unset( self, key ):
-		'''Wrapper method for gconf.Client.unset(...)'''
-		return self.client.unset( "%s/%s/%s" % (self.domain, self.dir, key) )
-
-	def list_dirs(self):
-		'''Returns a tuple representing directories in the current domain + path gconf directory'''
-		return self.client.all_dirs("%s/%s" % (self.domain, self.dir) )
 		
-	def remove_dir( self, key ):
-		'''Wrapper method for gconf.Client.remove_dir(...)'''
+		return self.client.all_entries( "%s" % self.build_path(path) )
 
-		''' setup path to handle dirs or keys'''
-		if key == "" or key == "/" :
-			path = self.dir
-		else :
-			path = "%s/%s" % (self.dir, key)
-			
+	def get_list( self , path=None):
+		'''Wrapper method for gconf.Client.get_list(...)'''
+		return self.client.get_list( "%s/list" % self.build_path(path) , gconf.VALUE_STRING )
+                                                                                                                            
+	def set_list( self, path, values ): # set_list( self, list )
+		'''Wrapper method for gconf.Client.set_list(...)'''
+		return self.client.set_list( "%s/list" % self.build_path(path), gconf.VALUE_STRING, values )
+
+	def set_string( self, path, value ):
+		'''Wrapper method for gconf.Client.set_string(...)'''
+		return self.client.set_string ( "%s" % self.build_path(path), value )
+                                                                                                                            
+	def get_string( self, path=None ):
+		'''Wrapper method for gconf.Client.get_string(...)'''
+		return self.client.get_string( "%s" % self.build_path(path) )
+
+	def set_int( self, path, value ):
+		'''Wrapper method for gconf.Client.set_int(...)'''
+		return self.client.set_int( "%s" % self.build_path(path) , value )
+
+	def get_int( self, path=None ):
+		'''Wrapper method for gconf.Client.get_int(...)'''
+		return self.client.get_int( "%s" % self.build_path(path) )
+
+	def set_bool( self, path, value ):
+		'''Wrapper method for gconf.Client.set_bool(...)'''
+		return self.client.set_bool( "%s" % self.build_path(path), value )
+
+	def get_bool( self, path=None ):
+		'''Wrapper method for gconf.Client.get_bool(...)'''
+		return self.client.get_bool( "%s" % self.build_path(path) )
+
+	def set_float( self, path, value ):
+		'''Wrapper method for gconf.Client.set_float(...)'''
+		return self.client.set_float( "%s" % self.build_path(path), value )
+
+	def get_float( self, path=None ):
+		'''Wrapper method for gconf.Client.get_float(...)'''
+		return self.client.get_float( "%s" % self.build_path(path) )
+
+	def unset( self, path ):
+		'''Wrapper method for gconf.Client.unset(...)'''
+		return self.client.unset( "%s" % self.build_path(path) )
+
+	def list_dirs(self, path=None):
+		'''Returns a tuple representing directories in the current domain + path gconf directory'''
+		return self.client.all_dirs("%s" % self.build_path(path) )
+		
+	def remove_dir( self, path ):
+		'''Wrapper method for gconf.Client.remove_dir(...)'''
+		path = self.build_path(path)
+		print "removing dir %s " % path
 		''' If it doesn't exist, return false. '''
-		if not self.client.dir_exists( "%s/%s" % (self.domain, path)):
-			print "remove_dir : can't find (%s)" % key
+		if not self.client.dir_exists( "%s" % path ):
+			print "remove_dir : can't find (%s)" % path
 			return False
 			
 		''' Test if it has child values, recursively unset them if so '''
-		children = self.get_entries()
+		children = self.get_entries(path)
 		if len(children) > 0 :
-			print "remove_dir : dir(%s) has children(%s)" % (key,children)
-			return self.client.recursive_unset( "%s/%s" % (self.domain, path) , gconf.UNSET_INCLUDING_SCHEMA_NAMES)
+			print "remove_dir : dir(%s) has children(%s)" % (path,children)
+			return self.client.recursive_unset( "%s" % path , gconf.UNSET_INCLUDING_SCHEMA_NAMES)
 
-		#self.client.add_dir ( "%s/%s/%s" % (self.domain, self.dir, key) , gconf.CLIENT_PRELOAD_NONE )
-		return self.client.remove_dir( "%s/%s" % (self.domain, path) )
+		return self.client.remove_dir( "%s" % path )
 
 	def get_real_value( self, value ): # value is of type gconf.Value
 		'''Convenience method for transparently getting a value determined by its type'''
@@ -157,35 +152,44 @@ class ConfigManager:
 			_value = value.get_list()
 		return _value
 
-	def set_real_value( self, key, value ):
+	def set_real_value( self, path, value ):
 		'''Convenience method for transparently setting a value determined by its type'''
 		_type = type( value )
+		path = self.build_path(path)
+		
 		if _type == types.StringType:
-			self.set_string( key, value )
+			self.set_string( path, value )
 		elif _type == types.IntType:
-			self.set_int( key, value )
+			self.set_int( path, value )
 		elif _type == types.FloatType:
-			self.set_float( key, value )
+			self.set_float( path, value )
 		elif _type == types.BooleanType:
-			self.set_bool( key, value )
+			self.set_bool( path, value )
 		else:
-			print "Error: Couldn't determine type for " + key + \
-				"; did not save value " + str( value )
+			print "Error: Couldn't determine type for %s did not save value %s " % (path, value )
+			
+	def build_path (self, path=None):
+		""" Function doc """
+		search_path = self.domain
+		if path != None and path.rfind(search_path) < 0 :
+			search_path = search_path + "/" + path
+		return search_path
 
-class GconfManager( ConfigManager ):
-	def __init__( self, domain, dir=None):
-		ConfigManager.__init__( self, domain, dir )
+		
+class GconfManager( ConfigManager ) :
+	def __init__( self, domain, dir=None) :
+		ConfigManager.__init__( self, domain )
 
-	def entries( self ):
+	def entries( self, path = None):
 		'''Returns a dict representing values within our /prefs gconf directory'''
 		entries_tmp = {}
-		for entry in self.get_entries():
+		for entry in self.get_entries(path):
 			key = entry.get_key()
 			key = key[ key.rfind("/")+1 : ]
 			if not entry.get_value():
 				entries_tmp[key] = None
 				continue
-			#value = pref.get_value().get_string()
+				
 			value = self.get_real_value( entry.get_value() )
 			entries_tmp[key] = value
 		return entries_tmp
