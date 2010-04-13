@@ -54,6 +54,43 @@ class userland_dbus_manager:
 			"authors"			: APP_AUTHORS,
 		}
 
+		self.gconf_schema = {
+			"use_notify_send"	: False,
+			"send_signals_over_network" : False,
+			"actions" : {
+				"actions" : {
+					"lid-opened"			: "bin/laptop-lid-opened.sh",			# paths are relative to $HOME
+					"lid-closed"			: "bin/laptop-lid-closed.sh",
+				},
+				"groups" : {
+					"lid-is-opened"		: ["lid-opened"],
+				}
+			},
+			"objects" : {
+				"session" : {},
+				"system" : {
+					"laptop_lid" : {
+						"name"	: "Laptop Lid Open/Close",
+						"interface" : "org.freedesktop.PowerKit",
+						"dbus_path"	: "org/freedesktop/PowerKit",
+						"object"		: "",
+						"signals"		: {
+							"open"	: {
+								"name"	: "laptop lid opened",
+								"requires" : "LAPTOP LID OPENED",
+								"actions"	: ["lid-opened"],
+							},
+							"close"	: {
+								"name"	: "laptop lid closed",
+								"requires" : "LAPTOP LID CLOSED",
+								"actions"	: ["lid-closed"],
+							}
+							
+						}
+					} 
+				}
+			}
+		}
 		self.Strings = {
 			"NoEventScript" : {
 				"icon"	: gtk.STOCK_DIALOG_WARNING,
@@ -120,25 +157,26 @@ class userland_dbus_manager:
 		gtk.main()
 
 	def initialise_config(self):
-		path = self.info['short-name']
-		self.config = {
-			"general" : GconfManager( "/apps/%s" % path, "general"),
-			"objects" : {},
-			"actions" : GconfManager( "/apps/%s" % path, "actions"),
-		}
-		print self.config["general"].get_entries()
 
-		print "Listing Object Types"
-		print "----"
-		for bus in GconfManager( "/apps/%s" % path, "objects").list_dirs() :
-			print bus
-#				self.config["objects"] = GconfManager( "/apps/%s/objects" % path, bus)
-		print "----"
+		self.config = GconfManager( "/apps/%s" % self.info['short-name'])
 
-		if self.config["general"].get_bool("use_libNotify") != None :
-			self.config["general"].set_bool("use_libNotify", False)
+		print self.config.list_dirs()
 
-		self.USE_NOTIFICATIONS = self.config["general"].get_bool("use_libNotify")
+		if self.config.get_bool("use_notify_send") :
+			self.config.set_bool("use_notify_send", False)
+
+		if not "system" in self.config.list_dirs() :
+			self.config.set_int("objects/system/count", 0)
+
+		if not "session" in self.config.list_dirs() :
+			self.config.set_int("objects/session/count", 0)
+			
+		if not "actions" in self.config.list_dirs("actions") :
+			self.config.set_int("actions/actions/count", 0)
+
+		if not "groups" in self.config.list_dirs("actions") :
+			self.config.set_int("actions/groups/count", 0)
+
 		
 	def show_preferences_dialog (self):
 		""" Function doc """
@@ -281,7 +319,7 @@ class userland_dbus_manager:
 			self.ErrorMessage( "Message Templating : %s\n%s" % ( key, error ) )
 
 	def notification( self, icon = None, title = None, message = None ):
-		if not self.USE_NOTIFICATIONS and pynotify.init( "Images Test" ) :
+		if not self.config.get_bool("use_libNotify") and pynotify.init( "Images Test" ) :
 			helper = gtk.Button()
 			bubble = pynotify.Notification( title, message )
 
