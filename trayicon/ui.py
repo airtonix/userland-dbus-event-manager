@@ -41,10 +41,20 @@ class TrayIcon():
 			},
 			"Menu" : {
 				"items" : (
-					( "pause",
-						gtk.STOCK_MEDIA_PAUSE,
-						self.menu_event,                
-						"Toggle Monitoring"),
+					(
+						{
+						"self.get_parent_state() == 'Listening'" : (
+							"pause",
+							gtk.STOCK_MEDIA_PAUSE,
+							self.menu_event,                
+							"Pause Monitoring"),
+						"self.get_parent_state() == 'Paused'" : (
+							"resume",
+							gtk.STOCK_MEDIA_PLAY,
+							self.menu_event,                
+							"Resume Monitoring")
+						}
+					),
 					( "preferences",
 						gtk.STOCK_PREFERENCES,
 						self.menu_event,                
@@ -137,6 +147,13 @@ class TrayIcon():
 			state = "Orphan"
 		return state
 		
+	def get_menu_item_state_mode(self,data):
+		for state in data :
+			print "%s = %s " % (state,eval(state))
+			if eval(state) : 
+				item = data[state]
+				break
+		return item
 #
 # Trayicon Menu
 	def popup_menu(self, event_button, event_time, icon):
@@ -144,6 +161,9 @@ class TrayIcon():
 		db = self.db["Menu"]
 		
 		for item in db["items"] :
+			# test if item is a dictionary (which means it is a state dependant menu item, the key being the command to test for true)
+			if isinstance(item, dict) :
+				item = self.get_menu_item_state_mode(item)
 			if not item == "-" :
 				print("%s \t: %s, %s") % (item[0], item[1], item[2])
 				menuItem = gtk.ImageMenuItem(item[1])
