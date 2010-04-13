@@ -64,22 +64,24 @@ class PreferencesEditor :
 
 	def render_tree_folders(self,data):
 		""" Function doc """
-		tree_column_name = gtk.TreeViewColumn('Name')
-		tree_cell_render = gtk.CellRendererText()
 		tree_store = gtk.TreeStore(types.StringType)
 
 		for item in data :
 			row = tree_store.append(None, ['%s' % self.key_name_from_path( str(item.get_key()) ) ] )
 
 		tree_view = gtk.TreeView(tree_store)
-		tree_view.append_column(tree_column_name)
 
+		tree_cell_render = gtk.CellRendererText()
+
+		tree_column_name = gtk.TreeViewColumn('Name')
 		tree_column_name.pack_start(tree_cell_render, True)
 		tree_column_name.add_attribute(tree_cell_render, 'text', 0)
-		
-		tree_view.set_enable_search(True)
-		tree_view.set_search_column(0)
 		tree_column_name.set_sort_column_id(0)
+
+		tree_view.append_column(tree_column_name)
+
+		tree_view.set_search_column(0)
+		tree_view.set_enable_search(True)
 		tree_view.set_reorderable(True)
 
 		return tree_view
@@ -107,26 +109,42 @@ class MultiList:
 		self.data = data
 		
 	def render(self):
-		list_store = gtk.ListStore(object)
+		list_store = gtk.ListStore(str,object)
+		
 		for item in self.data :
-			row = list_store.append(None, ['%s' % self.trim_path( str(item.get_key()) ) , '%s' % self.trim_path( str(item.get_value()) )] )
+			parent = None
+			row_data = [
+				'%s' % self.trim_path( str(item.get_key()) ) ,
+				'%s' % self.trim_path( str(item.get_value()) )
+			]
+			row = list_store.append(row_data)
 
 		self.tree_view = gtk.TreeView(list_store)
-		self.column = gtk.TreeViewColumn('Blah')
 
-		self.text = r = gtk.CellRendererText()
-		self.column.pack_start(r, False)
-		self.column.set_cell_data_func(r, self.select_data)
+		self.column_name_render = gtk.CellRendererText()
 
-		self.toggle = r = gtk.CellRendererToggle()
-		self.column.pack_start(r, False)
-		self.column.set_cell_data_func(r, self.select_data)
+		self.column_name = gtk.TreeViewColumn('Name')
+		self.column_name.pack_start(self.column_name_render, True)
+		self.column_name.add_attribute(self.column_name_render, 'text', 0)
+		self.column_name.set_sort_column_id(0)
 
-		self.pixbuf = r = gtk.CellRendererPixbuf()
-		self.column.pack_start(r, False)
-		self.column.set_cell_data_func(r, self.select_data)
+		self.tree_view.append_column(self.column_name)
 
-		self.tree_view.append_column(self.column)
+
+		self.column_value = gtk.TreeViewColumn('Value')
+		self.text = gtk.CellRendererText()
+		self.column_value.pack_start(self.text, False)
+		self.column_value.set_cell_data_func(self.text, self.select_data)
+
+		self.toggle = gtk.CellRendererToggle()
+		self.column_value.pack_start(self.toggle, False)
+		self.column_value.set_cell_data_func(self.toggle, self.select_data)
+
+		self.pixbuf = gtk.CellRendererPixbuf()
+		self.column_value.pack_start(self.pixbuf, False)
+		self.column_value.set_cell_data_func(self.pixbuf, self.select_data)
+
+		self.tree_view.append_column(self.column_value)
 		
 		return self.tree_view
 
@@ -149,10 +167,10 @@ class MultiList:
 			self.text.props.visible=False     
 			self.toggle.props.visible = False
 		elif isinstance(data, str):
-			self.pixbuf.props.visible = True
-			self.pixbuf.props.pixbuf = data
-			self.text.props.visible=False     
+			self.text.props.visible=True
+			self.text.props.text = data
 			self.toggle.props.visible = False
+			self.pixbuf.props.visible=False
 		else:
 			self.text.props.visible=True
 			self.text.props.text = data
