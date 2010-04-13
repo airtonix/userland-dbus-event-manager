@@ -1,5 +1,9 @@
-Userland Dbus Event Manager v0.01
+Userland Dbus Event Manager v0.01-alpha
 Zenobius Jiricek, airtonix > ubuntuforums.org
+
+=============================
+Not suitable for general use
+=============================
 
  Description :
   A userland dbus event watcher that runs scripts for registered DBUS hook events.
@@ -13,4 +17,4 @@ Zenobius Jiricek, airtonix > ubuntuforums.org
       sudo apt-get install python-notify notify-osd notification-daemon
 
  Installation :
-	Run setup.py
+	no setup routine yet.
