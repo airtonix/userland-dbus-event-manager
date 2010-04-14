@@ -20,7 +20,7 @@
                 <property name="width_request">64</property>
                 <property name="visible">True</property>
                 <property name="pixel_size">64</property>
-                <property name="icon_name">preferences-desktop-peripherals</property>
+                <property name="icon_name">utilities-system-monitor</property>
               </object>
               <packing>
                 <property name="expand">False</property>
