@@ -174,7 +174,6 @@ class ConfigManager:
 		if path != None and path.rfind(search_path) < 0 :
 			search_path = search_path + "/" + path
 		return search_path
-
 		
 class GconfManager( ConfigManager ) :
 	def __init__( self, domain, dir=None) :
@@ -189,7 +188,6 @@ class GconfManager( ConfigManager ) :
 			if not entry.get_value():
 				entries_tmp[key] = None
 				continue
-				
 			value = self.get_real_value( entry.get_value() )
 			entries_tmp[key] = value
 		return entries_tmp
