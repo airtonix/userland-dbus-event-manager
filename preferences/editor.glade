@@ -69,6 +69,8 @@
                       <object class="GtkImage" id="General_Header_Icon">
                         <property name="width_request">35</property>
                         <property name="visible">True</property>
+                        <property name="yalign">0</property>
+                        <property name="ypad">10</property>
                         <property name="pixel_size">32</property>
                         <property name="icon_name">document-properties</property>
                       </object>
@@ -79,17 +81,38 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="General_Header_Label">
+                      <object class="GtkVBox" id="vbox1">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="xpad">10</property>
-                        <property name="ypad">10</property>
-                        <property name="label" translatable="yes">General</property>
-                        <attributes>
-                          <attribute name="weight" value="bold"/>
-                          <attribute name="gravity" value="west"/>
-                          <attribute name="scale" value="1.500000"/>
-                        </attributes>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel" id="General_Header_Label">
+                            <property name="height_request">35</property>
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">1</property>
+                            <property name="xpad">5</property>
+                            <property name="label" translatable="yes">General</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                              <attribute name="gravity" value="west"/>
+                              <attribute name="scale" value="1.500000"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label1">
+                            <property name="height_request">40</property>
+                            <property name="visible">True</property>
+                            <property name="xpad">10</property>
+                            <property name="ypad">2</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -97,17 +120,22 @@
                     </child>
                     <child>
                       <object class="GtkToolbar" id="General_Header_Toolbar">
-                        <property name="width_request">30</property>
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="show_arrow">False</property>
+                        <property name="icon_size">1</property>
+                        <property name="icon_size_set">True</property>
                         <child>
                           <object class="GtkToolButton" id="General_Header_Button_Help">
                             <property name="visible">True</property>
+                            <property name="is_important">True</property>
                             <property name="label" translatable="yes">Help</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">gtk-help</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
                           </packing>
                         </child>
                       </object>
@@ -124,6 +152,15 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkHSeparator" id="hseparator3">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkScrolledWindow" id="General_Scroller">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -135,7 +172,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -166,6 +203,7 @@
               </object>
               <packing>
                 <property name="tab_expand">True</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
@@ -179,48 +217,79 @@
                       <object class="GtkImage" id="Objects_Header_Icon">
                         <property name="width_request">35</property>
                         <property name="visible">True</property>
+                        <property name="yalign">0</property>
+                        <property name="ypad">10</property>
                         <property name="pixel_size">32</property>
                         <property name="icon_name">insert-object</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="padding">5</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="Objects_Header_Label">
+                      <object class="GtkVBox" id="vbox2">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="xpad">5</property>
-                        <property name="ypad">10</property>
-                        <property name="label" translatable="yes">Objects</property>
-                        <attributes>
-                          <attribute name="style" value="normal"/>
-                          <attribute name="weight" value="bold"/>
-                          <attribute name="gravity" value="west"/>
-                          <attribute name="gravity-hint" value="natural"/>
-                          <attribute name="scale" value="1.500000"/>
-                        </attributes>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel" id="Objects_Header_Label">
+                            <property name="height_request">35</property>
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">1</property>
+                            <property name="xpad">5</property>
+                            <property name="label" translatable="yes">Objects</property>
+                            <attributes>
+                              <attribute name="style" value="normal"/>
+                              <attribute name="weight" value="bold"/>
+                              <attribute name="gravity" value="west"/>
+                              <attribute name="gravity-hint" value="natural"/>
+                              <attribute name="scale" value="1.500000"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label2">
+                            <property name="height_request">40</property>
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">0</property>
+                            <property name="xpad">10</property>
+                            <property name="ypad">2</property>
+                            <property name="label" translatable="yes">label</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkToolbar" id="Objects_Header_Toolbar">
-                        <property name="width_request">30</property>
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="show_arrow">False</property>
+                        <property name="icon_size">1</property>
+                        <property name="icon_size_set">True</property>
                         <child>
                           <object class="GtkToolButton" id="Objects_Header_Button_Help">
                             <property name="visible">True</property>
+                            <property name="is_important">True</property>
                             <property name="label" translatable="yes">Help</property>
                             <property name="use_underline">True</property>
                             <property name="stock_id">gtk-help</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
                           </packing>
                         </child>
                       </object>
@@ -237,11 +306,20 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkHSeparator" id="hseparator2">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkHPaned" id="Objects_Hpanel">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="border_width">2</property>
-                    <property name="position">1</property>
+                    <property name="border_width">5</property>
+                    <property name="position">2</property>
                     <property name="position_set">True</property>
                     <child>
                       <object class="GtkVBox" id="Objects_List_VBox">
@@ -275,6 +353,7 @@
                                 <property name="label" translatable="yes">toolbutton1</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">gtk-remove</property>
+                                <signal name="clicked" handler="callback_list_remove" after="yes"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -287,6 +366,7 @@
                                 <property name="label" translatable="yes">toolbutton2</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">gtk-add</property>
+                                <signal name="clicked" handler="callback_list_add" after="yes"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -322,7 +402,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -360,6 +440,7 @@
               <packing>
                 <property name="position">1</property>
                 <property name="tab_expand">True</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
@@ -373,6 +454,8 @@
                       <object class="GtkImage" id="Actions_Header_Icon">
                         <property name="width_request">35</property>
                         <property name="visible">True</property>
+                        <property name="yalign">0</property>
+                        <property name="ypad">10</property>
                         <property name="pixel_size">32</property>
                         <property name="icon_name">appointment-new</property>
                       </object>
@@ -383,29 +466,56 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="Actions_Header_Label">
+                      <object class="GtkVBox" id="vbox3">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="xpad">10</property>
-                        <property name="ypad">10</property>
-                        <property name="label" translatable="yes">Actions</property>
-                        <attributes>
-                          <attribute name="style" value="normal"/>
-                          <attribute name="weight" value="bold"/>
-                          <attribute name="gravity" value="west"/>
-                          <attribute name="gravity-hint" value="natural"/>
-                          <attribute name="scale" value="1.500000"/>
-                        </attributes>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel" id="Actions_Header_Label">
+                            <property name="height_request">35</property>
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">1</property>
+                            <property name="xpad">5</property>
+                            <property name="label" translatable="yes">Actions</property>
+                            <attributes>
+                              <attribute name="style" value="normal"/>
+                              <attribute name="weight" value="bold"/>
+                              <attribute name="gravity" value="west"/>
+                              <attribute name="gravity-hint" value="natural"/>
+                              <attribute name="scale" value="1.500000"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label3">
+                            <property name="height_request">40</property>
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">0</property>
+                            <property name="xpad">10</property>
+                            <property name="ypad">2</property>
+                            <property name="label" translatable="yes">label</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
-                        <property name="expand">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
                       <object class="GtkToolbar" id="Actions_Header_Toolbar">
-                        <property name="width_request">30</property>
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <property name="show_arrow">False</property>
+                        <property name="icon_size">1</property>
+                        <property name="icon_size_set">True</property>
                         <child>
                           <object class="GtkToolButton" id="Actions_Header_Button_Help">
                             <property name="visible">True</property>
@@ -415,6 +525,7 @@
                           </object>
                           <packing>
                             <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
                           </packing>
                         </child>
                       </object>
@@ -431,10 +542,20 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkHSeparator" id="hseparator1">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkHPaned" id="Actions_HPanel">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="border_width">2</property>
+                    <property name="border_width">5</property>
+                    <property name="position">2</property>
                     <property name="position_set">True</property>
                     <child>
                       <object class="GtkVBox" id="Actions_List_Vbox">
@@ -465,6 +586,7 @@
                                 <property name="label" translatable="yes">toolbutton1</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">gtk-remove</property>
+                                <signal name="clicked" handler="callback_list_remove"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -477,6 +599,7 @@
                                 <property name="label" translatable="yes">toolbutton2</property>
                                 <property name="use_underline">True</property>
                                 <property name="stock_id">gtk-add</property>
+                                <signal name="clicked" handler="callback_list_add" after="yes"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -512,7 +635,7 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -547,6 +670,7 @@
               <packing>
                 <property name="position">2</property>
                 <property name="tab_expand">True</property>
+                <property name="tab_fill">False</property>
               </packing>
             </child>
           </object>
