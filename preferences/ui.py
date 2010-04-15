@@ -41,17 +41,25 @@ class PreferencesEditor :
 		self.builder.get_object("Preferences_Main_Header_Label").set_text(self.parent.info["name"])
 		self.builder.get_object("Preferences_Main_Header_Icon").set_from_file("./userland-dbus-event-manager.png")
 
-		self.builder.get_object("General_Scroller").add( MultiDataColumnList(self.parent.config.entries()).render() )
+		general_tree = MultiDataColumnList( self, self.parent.config.entries() )
+		self.builder.get_object("General_Scroller").add( general_tree.render() )
 
 		for page in self.parent.config.list_dirs() :
 			page = self.key_name_from_path(page)
+			page_name = page.capitalize()
 
-			obj = self.builder.get_object( "%s_List_Scroller" % page.capitalize() )
+			obj = self.builder.get_object( "%s_List_Scroller" % page_name )
+			add_button = self.builder.get_object( "%s_List_Add" % page_name )
+			remove_button = self.builder.get_object( "%s_List_Remove" % page_name )
+			
+			tree = FolderList( self, page, self.dir_to_dict(page) )
 
-			tree = FolderList( self.dir_to_dict(page) ).render()
+			# Set the add / remove actions for the lists
+			add_button.connect('clicked', self.callback_list_add, (tree) )
+			remove_button.connect('clicked', self.callback_list_add, (tree ) )
 
 			print "Rendering : %s" % page
-			obj.add( tree )
+			obj.add( tree.render() )
 
 		print "Preferences Application Ready"
 		self.editor.show_all()
@@ -92,10 +100,24 @@ class PreferencesEditor :
 		Called when a 'help' button is clicked.
 		Each help button will pass a key which relates to a section in the help file.
 		"""
+#
+## Callbacks
+	def callback_list_add(self, widget, data) :
+		""" Function Doc """
+		target = data
+		target.add_item().edit_item(new_item)
+		
+	def callback_list_remove(self, widget, data) :
+		""" Function Doc """
+		tree = data
+		tree.remove_item()
+		
 
 class FolderList :
 	
-	def __init__(self, data) :
+	def __init__(self, parent, name, data) :
+		self.parent = parent
+		self.name = name
 		self.tree_store = gtk.TreeStore( types.StringType )
 		self.walk_tree(self.tree_store, data, None)
 
@@ -113,7 +135,7 @@ class FolderList :
 		
 	def render(self):
 		""" Function doc """
-		tree_view = gtk.TreeView(self.tree_store)
+		self.tree_view = gtk.TreeView(self.tree_store)
 
 		tree_cell_render = gtk.CellRendererText()
 
@@ -122,18 +144,54 @@ class FolderList :
 		tree_column_name.add_attribute(tree_cell_render, 'text', 0)
 		tree_column_name.set_sort_column_id(0)
 
-		tree_view.append_column(tree_column_name)
+		self.tree_view.append_column(tree_column_name)
+		self.tree_view.set_headers_visible(False)
+		self.tree_view.set_search_column(0)
+		self.tree_view.set_enable_search(True)
 
-		tree_view.set_search_column(0)
-		tree_view.set_enable_search(True)
-		tree_view.set_reorderable(True)
+		self.tree_view.get_selection().set_select_function(self.callback_treeview_row_selected, (self.tree_view) )
+		#tree_view.set_reorderable(True)
 		
-		return tree_view
+		return self.tree_view
 
+	def add_item (self,data):
+		""" Function doc """
+		# need :
+		# * the selected item <<< this will be the parent
+		parent = data
+		self.tree_store.append()
+		return item
+
+	def edit_item(self, item) :
+		""" Function doc """
+		
+	def remove_item (self,data=None):
+		""" Function doc """
+		list = data
+		if list == None :
+			list = self.get_selection()
+		for item in list :
+			self.tree_store.remove(item)
+
+	def get_selection(self):
+		selected_items = []
+		treeselection.selected_foreach(self.callback_get_selection_foreach, selected_items)
+		model = sel.get_treeview().get_model()
+		return (model, pathlist)
+#
+## CALLBACKS
+	def callback_treeview_row_selected(self, *args):
+		""" Called when a row is selected """
+		print self.name, args
+		
+	def callback_get_selection_foreach(self, *args):
+		""" helper callback for self.get_selection()"""
+		print self.name, args
 
 class MultiDataColumnList:
-	def __init__(self, data):
+	def __init__(self, parent, data):
 		self.data = data
+		self.parent = parent
 		
 	def render(self):
 		list_store = gtk.ListStore(types.StringType,object)
@@ -153,18 +211,25 @@ class MultiDataColumnList:
 
 
 		self.column_value = gtk.TreeViewColumn('Value')
+
 		self.text = r = gtk.CellRendererText()
+		self.text.set_property('editable', True)
+		self.text.connect('edited', self.callback_CellRendererText, (list_store,1))
 		self.column_value.pack_start(r, False)
 		self.column_value.set_cell_data_func(self.text, self.select_data)
 
 		self.toggle = r = gtk.CellRendererToggle()
+		self.toggle.set_property('activatable', True)
+		self.toggle.connect('toggled', self.callback_CellRendererToggle, (list_store,1))
 		self.column_value.pack_start(r, False)
 		self.column_value.set_cell_data_func(self.toggle, self.select_data)
 		
 		self.pixbuf = r = gtk.CellRendererPixbuf()
 		self.column_value.pack_start(r, False)
 		self.column_value.set_cell_data_func(self.pixbuf, self.select_data)
-
+		#
+		#
+		
 		self.tree_view.append_column(self.column_value)
 		
 		return self.tree_view
@@ -181,8 +246,6 @@ class MultiDataColumnList:
 		if isinstance(data, bool):
 			self.toggle.props.visible = True
 			self.toggle.props.active = data
-			self.toggle.set_property('activatable', True)
-			self.toggle.connect('toggled', self.callback_CellRendererToggle, (model, 1))
 		else :
 			self.toggle.props.visible = False
 
@@ -195,19 +258,18 @@ class MultiDataColumnList:
 		if isinstance(data, str):
 			self.text.props.visible=True
 			self.text.props.text = data
-			self.text.set_property('editable', True)
-			self.text.connect('edited', self.callback_CellRendererText, (model, 1))
 		else :
 			self.text.props.visible=False
-
-	def callback_CellRendererToggle (self, cell, path, user_data):
+#
+## Callbacks
+	def callback_CellRendererToggle (self, cell, path, data) :
 		""" Function doc """
-		model, column = user_data
-		model[path][column] = not model[path][column]
+		list_store, column = data
+		list_store[path][column] = not list_store[path][column]
 		return
 		
-	def callback_CellRendererText (self, cell, path, user_data):
+	def callback_CellRendererText (self, cell, path, data) :
 		""" Function doc """
-		model, column = user_data
-		model[path][column] = new_text
+		list_store, column = data
+		list_store[path][column] = new_text
 		return	
